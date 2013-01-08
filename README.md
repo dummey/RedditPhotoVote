@@ -1,0 +1,1 @@
+Couple quick hacks to make the photo competition more usable
