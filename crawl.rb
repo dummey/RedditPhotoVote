@@ -4,8 +4,7 @@ require 'sequel'
 
 ##
 # usage: ruby crawl.rb username password
-  
-# connect to an in-memory database
+
 DB = Sequel.sqlite('crawl.sqlite')
 
 begin 
@@ -34,7 +33,7 @@ puts "Parsing data and inserting into crawl.sqlite"
 b["data"]["children"].each do |thread|
 	plink = "http://www.reddit.com/r/photography/comments/1646jk/the_rphotography_your_best_shot_2012_voting_thread/"
 	photos.insert(
-		:image => thread["data"]["body"], 
+		:image => thread["data"]["body"].strip, 
 		:permalink => plink + thread["data"]["id"]
 	) unless thread["data"]["body"] =~ /deleted/
 end
