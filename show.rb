@@ -33,11 +33,14 @@ __END__
 @@ show
 #header
 	%h1 r/photography gimpy photo viewer
+	%p Hit refresh(f5 to load new pictures. You can change the number of pictures shown at a time by change the the number in the url, ie. /show/100 to show 100 on the same page.
 #main
-	%table
+	%table{:align => "center"}
 		%tbody
 			- @urls.each do |url|
 				%tr
-					%td 
-						%img {src="
+					%td{:align => "center"} 
+						%img{:src => url[:image]}
+						%br
+						%a{:href => url[:permalink]} #{url[:id]}
 
