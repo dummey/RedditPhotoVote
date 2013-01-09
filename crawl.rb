@@ -13,8 +13,10 @@ begin
 		primary_key :id
 		String 	:permalink
 		String 	:image
+		String  :modhash
 		index 	:permalink
 		unique  :image
+		
 	end
 rescue
 	puts "'photos' table already exists"
@@ -27,14 +29,14 @@ reddit = Snoo::Client.new
 reddit.log_in ARGV[0], ARGV[1]
 
 puts "Crawling data from reddit."
-a, b = reddit.get_comments(subreddit: "photography", link_id: "1646jk", depth: 2, limit: 1200).parsed_response
+a, b = reddit.get_comments(subreddit: "photography", link_id: "1646jk", depth: 2, limit: 1000).parsed_response
 
 puts "Parsing data and inserting into crawl.sqlite"
 b["data"]["children"].each do |thread|
-	plink = "http://www.reddit.com/r/photography/comments/1646jk/the_rphotography_your_best_shot_2012_voting_thread/"
 	photos.insert(
 		:image => thread["data"]["body"].strip, 
-		:permalink => plink + thread["data"]["id"]
+		:permalink => thread["data"]["id"],
+		:modhash => thread["data"]["modhash"]
 	) unless thread["data"]["body"] =~ /deleted/
 end
 puts "Ran to completion"
